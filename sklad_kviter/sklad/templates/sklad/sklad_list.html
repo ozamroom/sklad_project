@@ -1,0 +1,78 @@
+{% extends 'sklad/base_sklad.html' %}
+
+{% block title %}
+sklad
+{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">
+    /**
+    * Функция Скрывает/Показывает блок 
+    * @author ox2.ru дизайн студия
+    **/
+    function showHide(element_id) {
+        //Если элемент с id-шником element_id существует
+        if (document.getElementById(element_id)) { 
+            //Записываем ссылку на элемент в переменную obj
+            var obj = document.getElementById(element_id); 
+            //Если css-свойство display не block, то: 
+            if (obj.style.display != "block") { 
+                obj.style.display = "block"; //Показываем элемент
+            }
+            else obj.style.display = "none"; //Скрываем элемент
+        }
+        //Если элемент с id-шником element_id не найден, то выводим сообщение
+        else alert("Элемент с id: " + element_id + " не найден!"); 
+    }   
+</script>
+<div class="block_control">
+	<div class="block_add_detail">
+		<div>
+			<button onclick="showHide('block_id')" class="button_add_detail">создать деталь</button>
+		</div>
+		<div>
+			<form  action ="{% url 'sklad_list_url' %}" method="post" >
+				{% csrf_token %}
+				{{formid.field1}}
+				<button  class="ok_del" type="submit" name="detail_delete" value="detail_delete" >ОК</button>
+			</form>	
+		</div>
+	</div>
+	<div class="form_add_detail" id="block_id" style="display: none;" >
+		<form  action ="{% url 'sklad_list_url' %}" method="post">
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>имя</td>
+					<td>{{form.title}}</td>
+					<td>кол.</td>
+					<td>{{form.count}}</td>
+					<td><button class="button_add_detail" type="submit" name="detail_create" value="detail_create">OK</button></td></td>
+				</tr>
+			</table>
+		</form>	
+	</div>
+</div>
+
+<table class="tabl_details">
+	{% if form_errors.errors %}
+	<div style="margin: 8px 0 8px 4px; padding: 4px 4px 4px 4px; color: red; font-size: 14px;">
+		{{form_errors.errors}}
+	</div>
+	{% endif %}
+	{% for f in forms %}
+	<form action ="{% url 'sklad_list_url' %}" method="post">
+		{% csrf_token %}
+		<tr>
+			<td class="detail_title">{{f.title}}</td>
+			<td class="detail_count">{{f.count}}</td>
+			<td style="display: none;" class="detail_count">{{f.slug.as_hidden}}</td>
+			<td class="detail_number"><input type="number" name="number"></td>
+			<td><button class="detail_button" type="submit" name="detail_button_plus" value="{{f.slug.value}}"> + </button></td>
+			<td><button class="detail_button" type="submit" name="detail_button_minus" value="{{f.slug.value}}"> - </button></td>		
+		</tr>
+	</form>
+	{% endfor %}
+</table>
+{% endblock %}

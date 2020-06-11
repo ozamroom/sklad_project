@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+	<title>
+		{% block title %}
+			sklad
+		{% endblock %}
+	</title>
+</head>
+<body>
+	<header>
+		<div class='headerWraper'>
+			<div class='headerBloc'>
+				<a class='wrapLogoImg' title="sklad" href='{% url "sklad_list_url" %}'>
+					<img class='logoImg' src='{% static "Images/logo.png" %}' alt='sklad'>
+				</a>
+				{% if user.is_authenticated %}
+				<a class='bottonReg' href="{% url 'logout' %}">выход</a>
+				{% else %}
+				<a class='bottonReg' href="{% url 'login' %}">вход</a>
+				{% endif %}
+			</div>
+		</div>
+		<div class='headerBlocNav'>
+			
+			<nav class='headerNav'>
+				<ul>
+					{% if user.is_authenticated %}
+					<li class="headerNavActiv" ><a href='{% url "sklad_list_url" %}'>склад</a></li>
+					<li><a href='#'>расчет</a></li>
+					{% endif %}
+				</ul>
+			</nav>
+			
+		</div>
+	</header>
+	<main>
+		<div class='mainBloc'>
+			<div class='content'>
+				<div class='ckladContent'>
+						{% block content %}
+						{% endblock %}
+				</div>
+			</div>
+		</div>
+	</main>
+	<footer class='footerWraper'>
+		<div class='footerBloc'>
+		</div>
+	</footer>
+</body>
