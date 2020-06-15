@@ -8,8 +8,6 @@ from .models import List_details
 from .forms import DetailForm, DetailId
 
 
-
-
 class Sklad_list(LoginRequiredMixin, View):
 
 	def get(self, request):
@@ -45,6 +43,8 @@ class Sklad_list(LoginRequiredMixin, View):
 			bound_form = DetailForm(request.POST, instance=detail)
 			if bound_form.is_valid():
 				bound_form.save()
+			else:
+				return render(request, 'sklad/sklad_list.html', context={"form_errors": bound_form, 'forms': forms,})
 
 			name_detal = request.POST['detail_button_plus']
 			obj_detal = List_details.objects.get(slug__iexact=name_detal)
@@ -63,6 +63,8 @@ class Sklad_list(LoginRequiredMixin, View):
 			bound_form = DetailForm(request.POST, instance=detail)
 			if bound_form.is_valid():
 				bound_form.save()
+			else:
+				return render(request, 'sklad/sklad_list.html', context={"form_errors": bound_form, 'forms': forms,})
 
 			name_detal = request.POST['detail_button_minus']
 			obj_detal = List_details.objects.get(slug__iexact=name_detal)
@@ -91,6 +93,4 @@ class Sklad_list(LoginRequiredMixin, View):
 			obj.delete()
 
 			return redirect('/sklad')
-		
-		
-		# return render(request, 'sklad/sklad_list.html', context={"form_errors": bound_form, 'forms': forms,})
+
