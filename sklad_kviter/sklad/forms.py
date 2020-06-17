@@ -1,5 +1,5 @@
 from django import forms
-from .models import List_details
+from .models import List_details, Detail_in_products, List_products
 
 
 class DetailForm(forms.ModelForm):
@@ -19,8 +19,24 @@ class DetailId(forms.Form):
 	field1 = forms.ModelChoiceField(queryset = List_details.objects.all(), empty_label="удалить деталь")
 	field1.widget.attrs.update({'class': 'list_del_detil'})
 
-	## Для клааса наверное
-	# def __init__(self, *args, **kwargs):
-	# 	super(DetailId, self).__init__(*args, **kwargs)
-	# 	self.fields['field1'].widget.attrs.update({'class': 'list_del_detil'})
 
+class Detail_in_products_Form(forms.ModelForm):
+	model = Detail_in_products
+	fields = ['detail', 'detail_count']
+
+	widget = {
+		'detail': forms.Select(),
+		'detail_count': forms.NumberInput(),
+	}
+
+
+class List_products_Form(forms.Form):
+	model = List_products
+	fields = ['title','count','obj_details']
+
+	widget = {
+			'title': forms.TextInput(),
+			'count': forms.NumberInput(),
+			'obj_details': forms.ChoiceField()
+
+	}
