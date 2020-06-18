@@ -74,4 +74,26 @@ sklad
 	</form>
 	{% endfor %}
 </table>
+<br>
+<br>
+<div class="block_add_case">
+	<div>
+		<button onclick="showHide('block_case')" class="button_add_case">создать кейс деталей</button>
+	</div>
+	<div class="form_add_case" id="block_case" style="display: none;" >
+		<form  action ="{% url 'sklad_list_url' %}" method="post">
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>выбрать деталь</td>
+					<td>{{form_case.detail}}</td>
+					<td>кол.</td>
+					<td>{{form_case.detail_count}}</td>
+					<td><button class="button_add_detail" type="submit" name="detail_case" value="detail_case">OK</button></td></td>
+				</tr>
+			</table>
+		</form>	
+	</div>
+</div>
+
 {% endblock %}

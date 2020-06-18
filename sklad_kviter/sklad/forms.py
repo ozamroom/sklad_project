@@ -3,7 +3,6 @@ from .models import List_details, Detail_in_products, List_products
 
 
 class DetailForm(forms.ModelForm):
-
 	class Meta:
 		model = List_details
 		fields = ['title', 'count', 'slug']
@@ -21,22 +20,24 @@ class DetailId(forms.Form):
 
 
 class Detail_in_products_Form(forms.ModelForm):
-	model = Detail_in_products
-	fields = ['detail', 'detail_count']
+	class Meta:
+		model = Detail_in_products
+		fields = ['detail', 'detail_count']
 
-	widget = {
-		'detail': forms.Select(),
-		'detail_count': forms.NumberInput(),
-	}
+		widget = {
+			'detail': forms.Select(),
+			'detail_count': forms.NumberInput(),
+		}
 
 
 class List_products_Form(forms.Form):
-	model = List_products
-	fields = ['title','count','obj_details']
+	class Meta:
+		model = List_products
+		fields = ['title','count','obj_details']
 
-	widget = {
-			'title': forms.TextInput(),
-			'count': forms.NumberInput(),
-			'obj_details': forms.ChoiceField()
+		widget = {
+				'title': forms.TextInput(),
+				'count': forms.NumberInput(),
+				'obj_details': forms.ChoiceField()
 
-	}
+		}

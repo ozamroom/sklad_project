@@ -4,8 +4,8 @@ from django.views.generic import View
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import List_details
-from .forms import DetailForm, DetailId
+from .models import List_details, Detail_in_products
+from .forms import DetailForm, DetailId, Detail_in_products_Form
 
 
 class Sklad_list(LoginRequiredMixin, View):
@@ -14,6 +14,7 @@ class Sklad_list(LoginRequiredMixin, View):
 
 		form = DetailForm()
 		formid = DetailId()
+		form_case = Detail_in_products_Form()
 
 		details = List_details.objects.all()
 		forms = []
@@ -24,6 +25,7 @@ class Sklad_list(LoginRequiredMixin, View):
 			'form': form,
 			'forms': forms,
 			'formid': formid,
+			'form_case': form_case,
 		}	
 
 		return render(request, 'sklad/sklad_list.html', context=context)
@@ -85,6 +87,29 @@ class Sklad_list(LoginRequiredMixin, View):
 			obj.save()
 
 			return redirect('/sklad')
+
+		elif request.POST.get('detail_case'):
+			print("------------------")
+			print(request)
+			print("------------------")
+			print(request.POST)
+			print("------------------")
+			bound_form = Detail_in_products_Form(request.POST)
+
+			all_obj_case = Detail_in_products.objects.all()
+			print('_____________________')
+			print(all_obj_case)
+			print('______________________')
+
+			if bound_form.is_valid():
+				new_case = bound_form.save()
+			all_obj_case = Detail_in_products.objects.all()
+			print('_____________________')
+			print(all_obj_case)
+			print('______________________')
+			return redirect('/sklad')
+
+
 
 		elif request.POST.get('detail_delete'):
 
