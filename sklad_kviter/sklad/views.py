@@ -4,8 +4,8 @@ from django.views.generic import View
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import List_details, Detail_in_products
-from .forms import DetailForm, DetailId, Detail_in_products_Form
+from .models import List_details, Detail_in_products, List_products
+from .forms import DetailForm, DetailId, Detail_in_products_Form, Case_delete_Form, List_products_Form, Product_delete_Form, ListProductsForm
 
 
 class Sklad_list(LoginRequiredMixin, View):
@@ -15,6 +15,14 @@ class Sklad_list(LoginRequiredMixin, View):
 		form = DetailForm()
 		formid = DetailId()
 		form_case = Detail_in_products_Form()
+		case_del_form = Case_delete_Form()
+		product_create = List_products_Form()
+		product_del = Product_delete_Form()
+
+		product = List_products.objects.all()
+		form_product = []
+		for i in product:
+			form_product.append(List_products_Form(instance=i))
 
 		details = List_details.objects.all()
 		forms = []
@@ -26,6 +34,10 @@ class Sklad_list(LoginRequiredMixin, View):
 			'forms': forms,
 			'formid': formid,
 			'form_case': form_case,
+			'case_del_form': case_del_form,
+			'product_create': product_create,
+			'form_product': form_product,
+			'product_del': product_del,
 		}	
 
 		return render(request, 'sklad/sklad_list.html', context=context)
@@ -89,26 +101,13 @@ class Sklad_list(LoginRequiredMixin, View):
 			return redirect('/sklad')
 
 		elif request.POST.get('detail_case'):
-			print("------------------")
-			print(request)
-			print("------------------")
-			print(request.POST)
-			print("------------------")
-			bound_form = Detail_in_products_Form(request.POST)
 
-			all_obj_case = Detail_in_products.objects.all()
-			print('_____________________')
-			print(all_obj_case)
-			print('______________________')
+			bound_form = Detail_in_products_Form(request.POST)
 
 			if bound_form.is_valid():
 				new_case = bound_form.save()
-			all_obj_case = Detail_in_products.objects.all()
-			print('_____________________')
-			print(all_obj_case)
-			print('______________________')
-			return redirect('/sklad')
 
+			return redirect('/sklad')
 
 
 		elif request.POST.get('detail_delete'):
@@ -119,3 +118,68 @@ class Sklad_list(LoginRequiredMixin, View):
 
 			return redirect('/sklad')
 
+		elif request.POST.get('case_delete'):
+
+			id = request.POST['list_case']
+			obj = Detail_in_products.objects.get(id = id)
+			obj.delete()
+
+			return redirect('/sklad')
+
+		elif request.POST.get('create_product'):
+
+			bound_form = ListProductsForm(request.POST)
+
+			if bound_form.is_valid():
+				b = bound_form.save()
+
+			return redirect('/sklad')
+
+		elif request.POST.get('product_delete'):
+
+			id = request.POST['list_products']
+			obj = List_products.objects.get(id = id)
+			obj.delete()
+
+			return redirect('/sklad')
+
+
+
+		if request.POST.get('product_button_plus'):
+
+			slug = request.POST['product_button_plus']
+			product = List_products.objects.get(slug__iexact=slug)
+			bound_form = List_products_Form(request.POST, instance=product)
+
+			if bound_form.is_valid():
+				bound_form.save()
+
+			slug_product = request.POST['product_button_plus']
+			obj_product = List_products.objects.get(slug__iexact=slug_product)
+			number = request.POST['number']
+			if request.POST['number'] == '':
+				number = 0
+			obj_product.count = str(int(obj_product.count) + int(number))
+			obj_product.save()
+
+			return redirect('/sklad')
+
+		elif request.POST.get('product_button_minus'):
+			
+			slug = request.POST['product_button_minus']
+			product = List_products.objects.get(slug__iexact=slug)
+			bound_form = List_products_Form(request.POST, instance=product)
+			if bound_form.is_valid():
+				bound_form.save()
+			else:
+				return render(request, 'sklad/sklad_list.html', context={"form_errors": bound_form, 'forms': forms,})
+
+			slug_product = request.POST['product_button_minus']
+			obj_product = List_products.objects.get(slug__iexact=slug_product)
+			number = request.POST['number']
+			if request.POST['number'] == '':
+				number = 0
+			obj_product.count = str(int(obj_product.count) - int(number))
+			obj_product.save()
+
+			return redirect('/sklad')

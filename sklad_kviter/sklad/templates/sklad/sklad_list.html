@@ -77,8 +77,27 @@ sklad
 <br>
 <br>
 <div class="block_add_case">
-	<div>
-		<button onclick="showHide('block_case')" class="button_add_case">создать кейс деталей</button>
+	<div class="block_add_detail">
+		<div>
+			<button onclick="showHide('create_product')" class="button_add_detail">создать ИЗДЕЛИЕ</button>
+		</div>
+		<div>
+			<form  action ="{% url 'sklad_list_url' %}" method="post" >
+				{% csrf_token %}
+				{{product_del.list_products}}
+				<button  class="ok_del" type="submit" name="product_delete" value="product_delete" >ОК</button>
+			</form>	
+		</div>
+		<div>
+			<button onclick="showHide('block_case')" class="button_add_detail">создать кейс деталей</button>
+		</div>
+		<div>
+			<form  action ="{% url 'sklad_list_url' %}" method="post" >
+				{% csrf_token %}
+				{{case_del_form.list_case}}
+				<button  class="ok_del" type="submit" name="case_delete" value="case_delete" >ОК</button>
+			</form>	
+		</div>
 	</div>
 	<div class="form_add_case" id="block_case" style="display: none;" >
 		<form  action ="{% url 'sklad_list_url' %}" method="post">
@@ -94,6 +113,45 @@ sklad
 			</table>
 		</form>	
 	</div>
+	<div class="form_add_case" id="create_product" style="display: none;" >
+		<form  action ="{% url 'sklad_list_url' %}" method="post">
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>имя</td>
+					<td>{{product_create.title}}</td>
+					<td>кол.</td>
+					<td>{{product_create.count}}</td>
+					<td>выбрать кейсы</td>
+					<td>{{product_create.obj_details}}</td>
+					<td><button class="button_add_detail" type="submit" name="create_product" value="create_product">OK</button></td></td>
+				</tr>
+			</table>
+		</form>	
+	</div>
+
+	<table class="tabl_details">
+		{% if form_errors.errors %}
+		<div style="margin: 8px 0 8px 4px; padding: 4px 4px 4px 4px; color: red; font-size: 14px;">
+			{{form_errors.errors}}
+		</div>
+		{% endif %}
+		{% for f in form_product %}
+		<form action ="{% url 'sklad_list_url' %}" method="post">
+			{% csrf_token %}
+			<tr>
+				<td class="detail_title">{{f.title}}</td>
+				<td class="detail_count">{{f.count}}</td>
+				<td class="detail_count">{{f.obj_details}}</td>
+				<td class="detail_count">{{f.slug}}</td>
+				<td class="product_number"><input type="number" name="number"></td>
+				<td><button class="detail_button" type="submit" name="product_button_plus" value="{{f.slug.value}}"> + </button></td>
+				<td><button class="detail_button" type="submit" name="product_button_minus" value="{{f.slug.value}}"> - </button></td>		
+			</tr>
+		</form>
+		{% endfor %}
+	</table>
+
 </div>
 
 {% endblock %}

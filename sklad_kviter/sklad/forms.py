@@ -29,15 +29,34 @@ class Detail_in_products_Form(forms.ModelForm):
 			'detail_count': forms.NumberInput(),
 		}
 
+class Case_delete_Form(forms.Form):
+	list_case = forms.ModelChoiceField(queryset = Detail_in_products.objects.all(), empty_label="удалить кейс")
+	list_case.widget.attrs.update({'class': 'list_del_detil'})
 
-class List_products_Form(forms.Form):
+
+class List_products_Form(forms.ModelForm):
 	class Meta:
 		model = List_products
-		fields = ['title','count','obj_details']
+		fields = ['title','count','obj_details', 'slug']
 
 		widget = {
 				'title': forms.TextInput(),
 				'count': forms.NumberInput(),
-				'obj_details': forms.ChoiceField()
+				'obj_details': forms.ChoiceField(),
+				'slug': forms.TextInput(),
 
 		}
+class ListProductsForm(forms.ModelForm):
+	class Meta:
+		model = List_products
+		fields = ['title','count','obj_details',]
+
+		widget = {
+				'title': forms.TextInput(),
+				'count': forms.NumberInput(),
+				'obj_details': forms.ChoiceField(),
+		}
+
+class Product_delete_Form(forms.Form):
+	list_products = forms.ModelChoiceField(queryset = List_products.objects.all(), empty_label="удалить ИЗДЕЛИЕ")
+	list_products.widget.attrs.update({'class': 'list_del_detil'})
