@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views.generic import View
-from django.shortcuts import redirect
+# from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import List_details, Detail_in_products, List_products
@@ -159,7 +159,15 @@ class Sklad_list(LoginRequiredMixin, View):
 			number = request.POST['number']
 			if request.POST['number'] == '':
 				number = 0
-			obj_product.count = str(int(obj_product.count) + int(number))
+			l = list(obj_product.obj_details.values('detail_id', 'detail_count'))
+
+			for i in l:
+				z = list(i.values())
+				d = List_details.objects.get(id=z[0])
+				d.count = int(d.count) - (int(z[1])*int(number))
+				d.save()
+
+			obj_product.count = int(obj_product.count) + int(number)
 			obj_product.save()
 
 			return redirect('/sklad')
@@ -171,15 +179,21 @@ class Sklad_list(LoginRequiredMixin, View):
 			bound_form = List_products_Form(request.POST, instance=product)
 			if bound_form.is_valid():
 				bound_form.save()
-			else:
-				return render(request, 'sklad/sklad_list.html', context={"form_errors": bound_form, 'forms': forms,})
 
 			slug_product = request.POST['product_button_minus']
 			obj_product = List_products.objects.get(slug__iexact=slug_product)
 			number = request.POST['number']
 			if request.POST['number'] == '':
 				number = 0
-			obj_product.count = str(int(obj_product.count) - int(number))
+			l = list(obj_product.obj_details.values('detail_id', 'detail_count'))
+
+			for i in l:
+				z = list(i.values())
+				d = List_details.objects.get(id=z[0])
+				d.count = int(d.count) + (int(z[1])*int(number))
+				d.save()
+
+			obj_product.count = int(obj_product.count) - int(number)
 			obj_product.save()
 
 			return redirect('/sklad')

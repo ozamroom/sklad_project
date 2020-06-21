@@ -22,7 +22,7 @@ class Detail_in_products(models.Model):
 	slug = models.SlugField(max_length=50, null = False, unique=True)
 	
 	def __str__(self):
-		return 'деталь: {} кол. : {}'.format(self.detail, self.detail_count)
+		return '{} -кол: {}'.format(self.detail, self.detail_count)
 
 	def save(self, *args, **kwargs):
 		if not self.slug:
