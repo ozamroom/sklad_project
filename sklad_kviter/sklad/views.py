@@ -147,6 +147,10 @@ class Sklad_list(LoginRequiredMixin, View):
 
 		if request.POST.get('product_button_plus'):
 
+			print("--------------")
+			print(request.POST)
+			print("--------------")
+
 			slug = request.POST['product_button_plus']
 			product = List_products.objects.get(slug__iexact=slug)
 			bound_form = List_products_Form(request.POST, instance=product)
@@ -159,14 +163,13 @@ class Sklad_list(LoginRequiredMixin, View):
 			number = request.POST['number']
 			if request.POST['number'] == '':
 				number = 0
-			l = list(obj_product.obj_details.values('detail_id', 'detail_count'))
-
-			for i in l:
-				z = list(i.values())
-				d = List_details.objects.get(id=z[0])
-				d.count = int(d.count) - (int(z[1])*int(number))
-				d.save()
-
+			if 'cheek' in request.POST:
+				l = list(obj_product.obj_details.values('detail_id', 'detail_count'))
+				for i in l:
+					z = list(i.values())
+					d = List_details.objects.get(id=z[0])
+					d.count = int(d.count) - (int(z[1])*int(number))
+					d.save()
 			obj_product.count = int(obj_product.count) + int(number)
 			obj_product.save()
 

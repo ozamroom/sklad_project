@@ -34,10 +34,11 @@ class Case_delete_Form(forms.Form):
 	list_case.widget.attrs.update({'class': 'list_del_detil'})
 
 
+# для показа и изменения
 class List_products_Form(forms.ModelForm):
 	class Meta:
 		model = List_products
-		fields = ['title','count','obj_details', 'slug']
+		fields = ['title','count', 'obj_details', 'slug']
 
 		widget = {
 				'title': forms.TextInput(),
@@ -46,6 +47,10 @@ class List_products_Form(forms.ModelForm):
 				'slug': forms.TextInput(),
 
 		}
+
+	cheek = forms.BooleanField(required=False)
+
+# для создание изделия
 class ListProductsForm(forms.ModelForm):
 	class Meta:
 		model = List_products
