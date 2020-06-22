@@ -43,12 +43,15 @@ class List_products_Form(forms.ModelForm):
 		widget = {
 				'title': forms.TextInput(),
 				'count': forms.NumberInput(),
-				'obj_details': forms.ChoiceField(),
+				# 'obj_details': forms.widgets.CheckboxSelectMultiple(),
 				'slug': forms.TextInput(),
 
 		}
 
+	obj_details = forms.ModelMultipleChoiceField(queryset=Detail_in_products.objects.all(), widget=forms.CheckboxSelectMultiple, required=True)
 	cheek = forms.BooleanField(required=False)
+	# CheckboxInput
+
 
 # для создание изделия
 class ListProductsForm(forms.ModelForm):
