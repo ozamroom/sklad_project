@@ -6,6 +6,7 @@ sklad
 
 {% block content %}
 
+{% load static %}
 <script type="text/javascript">
     /**
     * Функция Скрывает/Показывает блок 
@@ -143,11 +144,12 @@ sklad
 				<td class="detail_title">{{f.title}}</td>
 				<td class="detail_count">{{f.count}}</td>
 				<td class="detail_count">{{f.cheek}}</td>
-				<td class="detail_count">{{f.obj_details }}</td>
 				<td style="display: none;" class="detail_count">{{f.slug.as_hidden}}</td>
 				<td class="product_number"><input type="number" name="number"></td>
 				<td><button class="detail_button" type="submit" name="product_button_plus" value="{{f.slug.value}}"> + </button></td>
-				<td><button class="detail_button" type="submit" name="product_button_minus" value="{{f.slug.value}}"> - </button></td>		
+				<td><button class="detail_button" type="submit" name="product_button_minus" value="{{f.slug.value}}"> - </button></td>
+				<td><img onclick="showHide('{{f.slug.value}}')" style="width: 20px; margin: 2px auto auto 8px;" src='{% static "Images/update.png" %}'></td>
+				<td id='{{f.slug.value}}' class="detail_count"  style="display: none;">{{f.obj_details }}</td>		
 			</tr>
 		</form>
 		{% endfor %}
