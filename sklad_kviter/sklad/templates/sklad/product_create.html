@@ -1,0 +1,88 @@
+{% extends 'sklad/base_sklad.html' %}
+
+{% load static %}
+
+{% block title %}
+sklad
+{% endblock %}
+
+{% block headerNav %}
+<nav class='headerNav'>
+	<ul>
+		{% if user.is_authenticated %}
+		<li><a href='{% url "sklad_list_url" %}'>склад</a></li>
+		<li><a href='#'>расчет</a></li>
+		{% endif %}
+	</ul>
+</nav>
+{% endblock %}
+
+
+{% block content %}
+<script type="text/javascript">
+    /**
+    * Функция Скрывает/Показывает блок 
+    **/
+    function showHide(element_id) {
+        //Если элемент с id-шником element_id существует
+        if (document.getElementById(element_id)) { 
+            //Записываем ссылку на элемент в переменную obj
+            var obj = document.getElementById(element_id); 
+            //Если css-свойство display не block, то: 
+            if (obj.style.display != "block") { 
+                obj.style.display = "block"; //Показываем элемент
+            }
+            else obj.style.display = "none"; //Скрываем элемент
+        }
+        //Если элемент с id-шником element_id не найден, то выводим сообщение
+        else alert("Элемент с id: " + element_id + " не найден!"); 
+    }   
+</script>
+
+<div class="block_add_case">
+	<div class="block_add_detail">
+		<div>
+			<button onclick="showHide('block_case')" class="button_add_detail">создать кейс деталей</button>
+		</div>
+		<div>
+			<form  action ="{% url 'product_create_url' %}" method="post" >
+				{% csrf_token %}
+				{{case_del_form.list_case}}
+				<button  class="ok_del" type="submit" name="case_delete" value="case_delete" >ОК</button>
+			</form>	
+		</div>
+	</div>
+	<div class="form_add_case" id="block_case" style="display: none;" >
+		<form  action ="{% url 'product_create_url' %}" method="post">
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>выбрать деталь</td>
+					<td>{{form_case.detail}}</td>
+					<td>кол.</td>
+					<td>{{form_case.detail_count}}</td>
+					<td><button class="button_add_detail" type="submit" name="detail_case" value="detail_case">OK</button></td></td>
+				</tr>
+			</table>
+		</form>	
+	</div>
+	<div class="form_add_case" >
+		<form  action ="{% url 'product_create_url' %}" method="post">
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>имя</td>
+					<td>{{product_create.title}}</td>
+					<td>кол.</td>
+					<td>{{product_create.count}}</td>
+					<td>выбрать кейсы</td>
+					<td>{{product_create.obj_details}}</td>
+					<td><button class="button_add_detail" type="submit" name="product_create" value="product_create">OK</button></td></td>
+				</tr>
+			</table>
+		</form>	
+	</div>
+
+</div>
+
+{% endblock %}

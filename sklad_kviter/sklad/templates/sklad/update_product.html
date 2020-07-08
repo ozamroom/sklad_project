@@ -1,0 +1,77 @@
+{% extends 'sklad/base_sklad.html' %}
+
+{% block title %}
+sklad
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<script type="text/javascript">
+    /**
+    * Функция Скрывает/Показывает блок 
+    **/
+    function showHide(element_id) {
+        //Если элемент с id-шником element_id существует
+        if (document.getElementById(element_id)) { 
+            //Записываем ссылку на элемент в переменную obj
+            var obj = document.getElementById(element_id); 
+            //Если css-свойство display не block, то: 
+            if (obj.style.display != "block") { 
+                obj.style.display = "block"; //Показываем элемент
+            }
+            else obj.style.display = "none"; //Скрываем элемент
+        }
+        //Если элемент с id-шником element_id не найден, то выводим сообщение
+        else alert("Элемент с id: " + element_id + " не найден!"); 
+    }   
+</script>
+
+<div class="block_add_case">
+	<div class="block_add_detail">
+		<div>
+			<button onclick="showHide('block_case')" class="button_add_detail">создать кейс деталей</button>
+		</div>
+		<div>
+			<form  action ="{% url 'sklad_list_url' %}" method="post" >
+				{% csrf_token %}
+				{{case_del_form.list_case}}
+				<button  class="ok_del" type="submit" name="case_delete" value="case_delete" >ОК</button>
+			</form>	
+		</div>
+	</div>
+	<div class="form_add_case" id="block_case" style="display: none;" >
+		<form  action ="{% url 'sklad_list_url' %}" method="post">
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>выбрать деталь</td>
+					<td>{{form_case.detail}}</td>
+					<td>кол.</td>
+					<td>{{form_case.detail_count}}</td>
+					<td><button class="button_add_detail" type="submit" name="detail_case" value="detail_case">OK</button></td></td>
+				</tr>
+			</table>
+		</form>	
+	</div>
+</div>
+
+
+	<table class="tabl_details">
+		<form action ="{% url 'sklad_list_url' %}" method="post">
+			{% csrf_token %}
+			<tr>
+				<td class="detail_title">{{form_product.title}}</td>
+				<td class="detail_count">{{form_product.count}}</td>
+				<td class="detail_count">{{form_product.cheek}}</td>
+				<td style="display: none;" class="detail_count">{{form_product.slug.as_hidden}}</td>
+				<td class="product_number"><input type="number" name="number"></td>
+				<td><button class="detail_button" type="submit" name="product_button_plus" value="{{form_product.slug.value}}"> + </button></td>
+				<td><button class="detail_button" type="submit" name="product_button_minus" value="{{form_product.slug.value}}"> - </button></td>
+				<td id='{{form_product.slug.value}}' class="detail_count">{{form_product.obj_details }}</td>		
+			</tr>
+		</form>
+	</table>
+
+
+{% endblock %}

@@ -14,8 +14,8 @@ class Sklad_list(LoginRequiredMixin, View):
 
 		form = DetailForm()
 		formid = DetailId()
-		form_case = Detail_in_products_Form()
-		case_del_form = Case_delete_Form()
+		# form_case = Detail_in_products_Form()
+		# case_del_form = Case_delete_Form()
 		product_create = List_products_Form()
 		product_del = Product_delete_Form()
 
@@ -33,8 +33,8 @@ class Sklad_list(LoginRequiredMixin, View):
 			'form': form,
 			'forms': forms,
 			'formid': formid,
-			'form_case': form_case,
-			'case_del_form': case_del_form,
+			# 'form_case': form_case,
+			# 'case_del_form': case_del_form,
 			'product_create': product_create,
 			'form_product': form_product,
 			'product_del': product_del,
@@ -100,14 +100,14 @@ class Sklad_list(LoginRequiredMixin, View):
 
 			return redirect('/sklad')
 
-		elif request.POST.get('detail_case'):
+		# elif request.POST.get('detail_case'):
 
-			bound_form = Detail_in_products_Form(request.POST)
+		# 	bound_form = Detail_in_products_Form(request.POST)
 
-			if bound_form.is_valid():
-				new_case = bound_form.save()
+		# 	if bound_form.is_valid():
+		# 		new_case = bound_form.save()
 
-			return redirect('/sklad')
+		# 	return redirect('/sklad')
 
 
 		elif request.POST.get('detail_delete'):
@@ -118,22 +118,22 @@ class Sklad_list(LoginRequiredMixin, View):
 
 			return redirect('/sklad')
 
-		elif request.POST.get('case_delete'):
+		# elif request.POST.get('case_delete'):
 
-			id = request.POST['list_case']
-			obj = Detail_in_products.objects.get(id = id)
-			obj.delete()
+		# 	id = request.POST['list_case']
+		# 	obj = Detail_in_products.objects.get(id = id)
+		# 	obj.delete()
 
-			return redirect('/sklad')
+		# 	return redirect('/sklad')
 
-		elif request.POST.get('create_product'):
+		# elif request.POST.get('create_product'):
 
-			bound_form = ListProductsForm(request.POST)
+		# 	bound_form = ListProductsForm(request.POST)
 
-			if bound_form.is_valid():
-				b = bound_form.save()
+		# 	if bound_form.is_valid():
+		# 		b = bound_form.save()
 
-			return redirect('/sklad')
+		# 	return redirect('/sklad')
 
 		elif request.POST.get('product_delete'):
 
@@ -200,3 +200,72 @@ class Sklad_list(LoginRequiredMixin, View):
 			obj_product.save()
 
 			return redirect('/sklad')
+
+
+
+
+
+class Product_create(LoginRequiredMixin, View):
+
+	def get(self, request):
+
+		form_case = Detail_in_products_Form()
+		case_del_form = Case_delete_Form()
+		product_create = List_products_Form()
+
+		context = {
+			'form_case': form_case,
+			'case_del_form': case_del_form,
+			'product_create': product_create,
+		}	
+
+		return render(request, 'sklad/product_create.html', context=context)
+
+	def post(self, request):
+
+		if request.POST.get('product_create'):
+
+			bound_form = ListProductsForm(request.POST)
+
+			if bound_form.is_valid():
+				b = bound_form.save()
+
+			return redirect('/sklad')
+
+		elif request.POST.get('detail_case'):
+
+			bound_form = Detail_in_products_Form(request.POST)
+
+			if bound_form.is_valid():
+				new_case = bound_form.save()
+
+			return redirect('/sklad/product_create')
+
+		elif request.POST.get('case_delete'):
+
+			id = request.POST['list_case']
+			obj = Detail_in_products.objects.get(id = id)
+			obj.delete()
+
+			return redirect('/sklad/product_create')
+
+
+class Update_roduct(LoginRequiredMixin, View):
+
+	def get(self, request, slug):
+
+		product = List_products.objects.get(slug__iexact=slug)
+		form_product = List_products_Form(instance=product)
+		form_case = Detail_in_products_Form()
+		case_del_form = Case_delete_Form()
+
+		context = {
+		'form_product': form_product,
+		'form_case': form_case,
+		'case_del_form': case_del_form,
+		}
+
+		return render(request, 'sklad/update_product.html', context=context)
+
+	def post(self, request):
+		pass
