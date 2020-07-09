@@ -31,7 +31,7 @@
 				<ul>
 					{% if user.is_authenticated %}
 					<li class="headerNavActiv" ><a href='{% url "sklad_list_url" %}'>склад</a></li>
-					<li><a href='#'>расчет</a></li>
+					<li><a href='{% url "calculation_url" %}'>расчет</a></li>
 					{% endif %}
 				</ul>
 			</nav>

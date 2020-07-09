@@ -5,7 +5,7 @@ from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import List_details, Detail_in_products, List_products
-from .forms import DetailForm, DetailId, Detail_in_products_Form, Case_delete_Form, List_products_Form, Product_delete_Form, ListProductsForm
+from .forms import DetailForm, DetailId, Detail_in_products_Form, Case_delete_Form, List_products_Form, Product_delete_Form, ListProductsForm, Calculation_product_form
 
 
 class Sklad_list(LoginRequiredMixin, View):
@@ -197,6 +197,21 @@ class Product_create(LoginRequiredMixin, View):
 
 		elif request.POST.get('detail_case'):
 
+			print('----------------')
+			dicttest = request.POST
+			print(dicttest)
+			print(list(dicttest.items()))
+			print()
+			for i in dicttest['detail']:
+				print(list(dicttest.values()))
+			print()
+			print(dicttest.dict())
+			print('----------------')
+			print('----------------')
+			print(request.POST.getlist('detail'))
+			print(request.POST.getlist('detail_count'))
+			print('----------------')
+
 			bound_form = Detail_in_products_Form(request.POST)
 
 			if bound_form.is_valid():
@@ -228,6 +243,10 @@ class Product_update(LoginRequiredMixin, View):
 		'form_case': form_case,
 		'case_del_form': case_del_form,
 		}
+		print('-------------------')
+		print(product)
+		print(product.obj_details)
+		print('-------------------')
 
 		return render(request, 'sklad/product_update.html', context=context)
 
@@ -301,3 +320,53 @@ class Product_update(LoginRequiredMixin, View):
 			obj.delete()
 
 			return redirect('/sklad/product_create')
+
+
+class Calculation(LoginRequiredMixin, View):
+
+	def get(self, request):
+
+		form = Calculation_product_form()
+
+		context = {
+		'form' : form,
+		}
+		return render(request, 'calculation/calculation.html', context=context)
+
+	def post(self, request):
+		
+		if request.POST.get('calculation'):
+
+			id_product = request.POST['product']
+			product = List_products.objects.get(id = id_product)
+			count = request.POST['count']
+
+			
+			l = list(product.obj_details.values('detail_id', 'detail_count'))
+			
+			details = []
+			sum_detail = []
+			sum_res_detail = []
+			for i in l:
+				z = list(i.values())
+				# индифицируем деталь
+				
+				detail = List_details.objects.get(id = z[0])
+				details.append(detail)
+
+				sum_d = int(z[1]) * int(count)
+				sum_detail.append(sum_d)
+
+				sum_res_d = detail.count - sum_d
+				sum_res_detail.append(sum_res_d)
+
+			form = Calculation_product_form()
+
+			context = {
+			'form' : form,
+			'details':details,
+			'sum_detail':sum_detail,
+			'sum_res_detail':sum_res_detail,
+			}
+
+			return render(request, 'calculation/calculation.html', context=context)

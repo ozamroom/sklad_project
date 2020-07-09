@@ -52,6 +52,9 @@ sklad
 			</form>	
 		</div>
 	</div>
+
+
+
 	<div class="form_add_case" id="block_case" style="display: none;" >
 		<form  action ="{% url 'product_create_url' %}" method="post">
 			{% csrf_token %}
@@ -61,11 +64,22 @@ sklad
 					<td>{{form_case.detail}}</td>
 					<td>кол.</td>
 					<td>{{form_case.detail_count}}</td>
+				</tr>
+				<tr>
+					<td>выбрать деталь</td>
+					<td>{{form_case.detail}}</td>
+					<td>кол.</td>
+					<td>{{form_case.detail_count}}</td>
+				</tr>
+				<tr>
 					<td><button class="button_add_detail" type="submit" name="detail_case" value="detail_case">OK</button></td></td>
 				</tr>
 			</table>
 		</form>	
 	</div>
+
+
+
 	<div class="form_add_case" >
 		<form  action ="{% url 'product_create_url' %}" method="post">
 			{% csrf_token %}
