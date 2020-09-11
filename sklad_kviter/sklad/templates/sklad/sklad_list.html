@@ -1,4 +1,4 @@
-{% extends 'sklad/base_sklad.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
 sklad
@@ -126,7 +126,7 @@ sklad
 				<td><button class="detail_button" type="submit" name="product_button_plus" value="{{f.slug.value}}"> + </button></td>
 				<td><button class="detail_button" type="submit" name="product_button_minus" value="{{f.slug.value}}"> - </button></td>
 				<td>
-					<a href="/sklad/{{f.slug.value}}/"> <img style="width: 20px; margin: 2px auto auto 8px; opacity: 0.5;" src='{% static "Images/update.png" %}'></a>
+					<a href="/sklad/product/{{f.slug.value}}/"> <img style="width: 20px; margin: 2px auto auto 8px; opacity: 0.5;" src='{% static "Images/update.png" %}'></a>
 				</td>
 				<td id='{{f.slug.value}}' class="detail_count"  style="display: none;">{{f.obj_details }}</td>		
 			</tr>

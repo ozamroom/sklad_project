@@ -68,3 +68,9 @@ class ListProductsForm(forms.ModelForm):
 class Product_delete_Form(forms.Form):
 	list_products = forms.ModelChoiceField(queryset = List_products.objects.all(), empty_label="удалить ИЗДЕЛИЕ")
 	list_products.widget.attrs.update({'class': 'list_del_detil'})
+
+
+
+class Calculation_product_form(forms.Form):
+	product = forms.ModelChoiceField(queryset = List_products.objects.all(), empty_label="выбрать изделие")
+	count = forms.IntegerField()

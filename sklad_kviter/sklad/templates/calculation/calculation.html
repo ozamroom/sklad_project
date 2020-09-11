@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}
+sklad - расчет
+{% endblock %}
+
+{% block headerNav %}
+<nav class='headerNav'>
+	<ul>
+		{% if user.is_authenticated %}
+		<li><a href='{% url "sklad_list_url" %}'>склад</a></li>
+		<li class="headerNavActiv"><a href='{% url "calculation_url" %}'>расчет</a></li>
+		{% endif %}
+	</ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<script type="text/javascript">
+    /**
+    * Функция Скрывает/Показывает блок 
+    **/
+    function showHide(element_id) {
+        //Если элемент с id-шником element_id существует
+        if (document.getElementById(element_id)) { 
+            //Записываем ссылку на элемент в переменную obj
+            var obj = document.getElementById(element_id); 
+            //Если css-свойство display не block, то: 
+            if (obj.style.display != "block") { 
+                obj.style.display = "block"; //Показываем элемент
+            }
+            else obj.style.display = "none"; //Скрываем элемент
+        }
+        //Если элемент с id-шником element_id не найден, то выводим сообщение
+        else alert("Элемент с id: " + element_id + " не найден!"); 
+    }   
+</script>
+
+	<table class="tabl_details">
+		<form action ="{% url 'calculation_url' %}" method="post">
+			{% csrf_token %}
+			<tr>
+				<td class="detail_title">{{form.product}}</td>
+				<td class="detail_count">{{form.count}}</td>
+				<td><button class="detail_button" type="submit" name="calculation" value="calculation">расчитать</button></td>
+			</tr>
+		</form>
+	</table>
+	<table>
+		<tr>
+			<th>детали</th>
+			<th>нужно для сборки</th>
+			<th>останеться на складе</th>
+			<th>сейчас на складе</th>
+		</tr>
+		<tr>
+	
+		<!-- <tr>
+			
+				
+				<td>
+					{{details}}
+				</td>
+				
+		</tr> -->
+		
+<!-- 		{% for d in sum_detail %}
+		<tr>
+			
+				
+				<td>
+					{{d}}
+				</td>
+				
+		</tr>
+		{% endfor %}
+		{% for d in sum_res_detail %}
+		<tr>	
+			
+				
+				<td>
+					{{d}}
+				</td>
+				
+		
+		</tr>
+		{% endfor %}
+		{% for d in details %}
+		<tr>
+			
+				
+				<td>
+					{{d.count}}
+				</td>
+				
+		</tr>
+		{% endfor %} -->
+
+ 		{% for d in details %}
+		<tr>
+			
+				
+				<td>
+					{{d.title}}
+				</td>
+				
+		</tr>
+		{% endfor %}
+		{% for d in sum_detail %}
+		<tr>
+			
+				
+				<td>
+					{{d}}
+				</td>
+				
+		</tr>
+		{% endfor %}
+		{% for d in sum_res_detail %}
+		<tr>	
+			
+				
+				<td>
+					{{d}}
+				</td>
+				
+		
+		</tr>
+		{% endfor %}
+		{% for d in details %}
+		<tr>
+			
+				
+				<td>
+					{{d.count}}
+				</td>
+				
+		</tr>
+		{% endfor %}
+	</table>
+
+{% endblock %}
