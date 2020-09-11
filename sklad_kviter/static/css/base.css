@@ -152,8 +152,15 @@ img{
 	opacity: 0.7;
 }
 
+
+
 .button_add_detail:hover{
 	opacity: 0.9;
+}
+
+.button_add_detail a {
+	text-decoration: none;
+	color: #082d1d9c;
 }
 
 .button_del_detail{

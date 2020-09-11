@@ -20,8 +20,6 @@
 				</a>
 				{% if user.is_authenticated %}
 				<a class='bottonReg' href="{% url 'logout' %}">выход</a>
-				{% else %}
-				<a class='bottonReg' href="{% url 'login' %}">вход</a>
 				{% endif %}
 			</div>
 		</div>

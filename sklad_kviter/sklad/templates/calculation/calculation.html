@@ -1,7 +1,7 @@
-{% extends 'sklad/base_sklad.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
-расчет
+sklad - расчет
 {% endblock %}
 
 {% block headerNav %}
@@ -50,38 +50,95 @@
 	</table>
 	<table>
 		<tr>
-			
-				{% for d in details %}
-				<td>
-					{{d.title}}
-				</td>
-				{% endfor %}
+			<th>детали</th>
+			<th>нужно для сборки</th>
+			<th>останеться на складе</th>
+			<th>сейчас на складе</th>
 		</tr>
 		<tr>
+	
+		<!-- <tr>
 			
-				{% for d in sum_detail %}
+				
+				<td>
+					{{details}}
+				</td>
+				
+		</tr> -->
+		
+<!-- 		{% for d in sum_detail %}
+		<tr>
+			
+				
 				<td>
 					{{d}}
 				</td>
-				{% endfor %}
+				
 		</tr>
+		{% endfor %}
+		{% for d in sum_res_detail %}
 		<tr>	
 			
-				{% for d in sum_res_detail %}
+				
 				<td>
 					{{d}}
 				</td>
-				{% endfor %}
+				
 		
 		</tr>
+		{% endfor %}
+		{% for d in details %}
 		<tr>
 			
-				{% for d in details %}
+				
 				<td>
 					{{d.count}}
 				</td>
-				{% endfor %}
+				
 		</tr>
+		{% endfor %} -->
+
+ 		{% for d in details %}
+		<tr>
+			
+				
+				<td>
+					{{d.title}}
+				</td>
+				
+		</tr>
+		{% endfor %}
+		{% for d in sum_detail %}
+		<tr>
+			
+				
+				<td>
+					{{d}}
+				</td>
+				
+		</tr>
+		{% endfor %}
+		{% for d in sum_res_detail %}
+		<tr>	
+			
+				
+				<td>
+					{{d}}
+				</td>
+				
+		
+		</tr>
+		{% endfor %}
+		{% for d in details %}
+		<tr>
+			
+				
+				<td>
+					{{d.count}}
+				</td>
+				
+		</tr>
+		{% endfor %}
 	</table>
 
 {% endblock %}

@@ -197,21 +197,6 @@ class Product_create(LoginRequiredMixin, View):
 
 		elif request.POST.get('detail_case'):
 
-			print('----------------')
-			dicttest = request.POST
-			print(dicttest)
-			print(list(dicttest.items()))
-			print()
-			for i in dicttest['detail']:
-				print(list(dicttest.values()))
-			print()
-			print(dicttest.dict())
-			print('----------------')
-			print('----------------')
-			print(request.POST.getlist('detail'))
-			print(request.POST.getlist('detail_count'))
-			print('----------------')
-
 			bound_form = Detail_in_products_Form(request.POST)
 
 			if bound_form.is_valid():
@@ -243,10 +228,6 @@ class Product_update(LoginRequiredMixin, View):
 		'form_case': form_case,
 		'case_del_form': case_del_form,
 		}
-		print('-------------------')
-		print(product)
-		print(product.obj_details)
-		print('-------------------')
 
 		return render(request, 'sklad/product_update.html', context=context)
 
@@ -276,7 +257,17 @@ class Product_update(LoginRequiredMixin, View):
 			obj_product.count = int(obj_product.count) + int(number)
 			obj_product.save()
 
-			return redirect('/sklad')
+			product = List_products.objects.get(slug__iexact=slug)
+			form_product = List_products_Form(instance=product)
+			form_case = Detail_in_products_Form()
+			case_del_form = Case_delete_Form()
+			context = {
+			'product': product,
+			'form_product': form_product,
+			'form_case': form_case,
+			'case_del_form': case_del_form,
+			}
+			return render(request, 'sklad/product_update.html', context=context)
 
 		elif request.POST.get('product_button_minus'):
 			
@@ -302,7 +293,17 @@ class Product_update(LoginRequiredMixin, View):
 			obj_product.count = int(obj_product.count) - int(number)
 			obj_product.save()
 
-			return redirect('/sklad')
+			product = List_products.objects.get(slug__iexact=slug)
+			form_product = List_products_Form(instance=product)
+			form_case = Detail_in_products_Form()
+			case_del_form = Case_delete_Form()
+			context = {
+			'product': product,
+			'form_product': form_product,
+			'form_case': form_case,
+			'case_del_form': case_del_form,
+			}
+			return render(request, 'sklad/product_update.html', context=context)
 		
 		elif request.POST.get('detail_case'):
 
@@ -311,7 +312,18 @@ class Product_update(LoginRequiredMixin, View):
 			if bound_form.is_valid():
 				new_case = bound_form.save()
 
-			return redirect('/sklad/product_create')
+			product = List_products.objects.get(slug__iexact=slug)
+			form_product = List_products_Form(instance=product)
+			form_case = Detail_in_products_Form()
+			case_del_form = Case_delete_Form()
+			context = {
+			'product': product,
+			'form_product': form_product,
+			'form_case': form_case,
+			'case_del_form': case_del_form,
+			}
+
+			return render(request, 'sklad/product_update.html', context=context)
 
 		elif request.POST.get('case_delete'):
 
@@ -319,7 +331,18 @@ class Product_update(LoginRequiredMixin, View):
 			obj = Detail_in_products.objects.get(id = id)
 			obj.delete()
 
-			return redirect('/sklad/product_create')
+			product = List_products.objects.get(slug__iexact=slug)
+			form_product = List_products_Form(instance=product)
+			form_case = Detail_in_products_Form()
+			case_del_form = Case_delete_Form()
+			context = {
+			'product': product,
+			'form_product': form_product,
+			'form_case': form_case,
+			'case_del_form': case_del_form,
+			}
+
+			return render(request, 'sklad/product_update.html', context=context)
 
 
 class Calculation(LoginRequiredMixin, View):

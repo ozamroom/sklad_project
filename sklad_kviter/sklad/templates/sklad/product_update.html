@@ -1,7 +1,7 @@
-{% extends 'sklad/base_sklad.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
-sklad
+sklad - изменение изделия
 {% endblock %}
 
 {% block headerNav %}
@@ -9,7 +9,7 @@ sklad
 	<ul>
 		{% if user.is_authenticated %}
 		<li><a href='{% url "sklad_list_url" %}'>склад</a></li>
-		<li><a href='#'>расчет</a></li>
+		<li><a href='{% url "calculation_url" %}'>расчет</a></li>
 		{% endif %}
 	</ul>
 </nav>
